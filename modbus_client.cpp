@@ -26,7 +26,7 @@ int main() {
     }
 
     int rc;
-    uint16_t values[4];
+    uint16_t values[5];
 
     while (true) {
         rc = modbus_read_registers(ctx, 130, 5, values); // only need register 130
