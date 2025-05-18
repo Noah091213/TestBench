@@ -27,6 +27,12 @@ int main() {
     
     uint16_t values[4];
 
+    //Her laver vi lige en Reset på confirmation værdien
+    rc = modbus_write_register(ctx, 131, 1);
+    if (rc == -1) {
+        std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+    }
+    
     while(true){
         int rc = modbus_read_registers(ctx, 130, 4, values);
     
