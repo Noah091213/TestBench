@@ -27,50 +27,43 @@ int main() {
 
     int rc;
     uint16_t values[4];
-    
-    while(values[1] == 1){
-        modbus_write_register(ctx, 131, 1);
-    }
-    
-    while(true){
-    int rc = modbus_read_registers(ctx, 130, 4, values);
-    
-    if (rc == -1) {
-        std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
-    } else {
+    while (true) {
+        rc = modbus_read_registers(ctx, 130, 4, values);
+        if (rc == -1) {
+            std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
+            break;
+        }
+
         std::cout << "Read " << rc << " registers starting at 130:\n";
         for (int i = 0; i < rc; ++i) {
             std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
         }
-    }
 
-    if (values[0] == 1) {
-        std::cout << "Massa tells us to open de grippar";
+        // If the robot set register 130 to 1...
+        if (values[0] == 1) {
+            std::cout << "[!] Massa tells us to open de grippar\n";
+
+            // Acknowledge it by writing 1 to 131
             rc = modbus_write_register(ctx, 131, 1);
-        if (rc == -1) {
-            std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
-        } else {
-            sleep(2);
-            while(values[0] == 0){
-                if (values[1] == 1) {
-                    rc = modbus_write_register(ctx, 131, 0);
-                    if (rc == -1) {
-                    std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
-                    } else {
-                    std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n"; 
-                }
-                }
-                sleep(1);
+            if (rc == -1) {
+                std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+            } else {
+                std::cout << "Sent confirmation: 131 = 1\n";
+            }
+
+            sleep(2);  // Wait for robot to process
+
+            // Reset 131 back to 0
+            rc = modbus_write_register(ctx, 131, 0);
+            if (rc == -1) {
+                std::cerr << "Reset failed: " << modbus_strerror(errno) << "\n";
+            } else {
+                std::cout << "Reset confirmation: 131 = 0\n";
             }
         }
+
+        sleep(1);  // Poll once per second
     }
-
-
-    sleep(1);
-        
-        
-    }
-
 
     modbus_close(ctx);
     modbus_free(ctx);
