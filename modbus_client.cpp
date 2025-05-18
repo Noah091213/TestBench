@@ -49,6 +49,8 @@ int main() {
             rc = modbus_write_register(ctx, 131, 0);
                 if (rc == -1) {
                 std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+                } else {
+                    sleep(2);
                 }
         }
     }
