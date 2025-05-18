@@ -46,6 +46,10 @@ int main() {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
             std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";       
+            rc = modbus_write_register(ctx, 131, 0);
+                if (rc == -1) {
+                std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+                }
         }
     }
 
