@@ -28,13 +28,6 @@ int main() {
     int rc;
     uint16_t values[4];
 
-    //Her laver vi lige en Reset på confirmation værdien
-    rc = modbus_write_register(ctx, 131, 1);
-    if (rc == -1) {
-        std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
-    } else {
-        std::cout << "Reset værdien på 131" ;
-    }
     
     while(true){
     int rc = modbus_read_registers(ctx, 130, 4, values);
@@ -49,14 +42,23 @@ int main() {
     }
         
     if (values[0] == 1) {
-            std::cout << "Massa tells us to open de grippar";
+        std::cout << "Massa tells us to open de grippar";
             rc = modbus_write_register(ctx, 131, 1);
         if (rc == -1) {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
-            std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";       
-            sleep(1);
-            rc = modbus_write_register(ctx, 131, 0);
+            sleep(2);
+            while(values[0] == 0){
+                if (values[1] == 1) {
+                    rc = modbus_write_register(ctx, 131, 0);
+                    if (rc == -1) {
+                    std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+                    } else {
+                    std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n"; 
+                }
+                }
+                sleep(1);
+            }
                 if (rc == -1) {
                 std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
                 } else {
