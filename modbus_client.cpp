@@ -31,6 +31,8 @@ int main() {
     rc = modbus_write_register(ctx, 131, 1);
     if (rc == -1) {
         std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+    } else {
+        std::cout << "Reset værdien på 131" ;
     }
     
     while(true){
