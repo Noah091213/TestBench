@@ -27,6 +27,7 @@ mb_mapping = modbus_mapping_new(1,0,0,0);
     uint16_t value130 = 0;
 
     while (true) {
+        std::cout << "Listening ACTIVE";
         int rc = modbus_read_registers(ctx, 130, 1, &value130);
         if (rc == -1) {
             std::cerr << "Failed to read register 130: " << modbus_strerror(errno) << "\n";
