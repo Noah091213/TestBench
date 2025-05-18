@@ -29,7 +29,7 @@ int main() {
     uint16_t values[4];
 
     while (true) {
-        rc = modbus_read_registers(ctx, 130, 4, values); // only need register 130
+        rc = modbus_read_registers(ctx, 130, 5, values); // only need register 130
         if (rc == -1) {
             std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
             break;
