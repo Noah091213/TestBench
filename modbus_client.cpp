@@ -44,10 +44,10 @@ int main() {
             // Simulate gripper operation
             sleep(10);  // Gripper action...
 
-            // Acknowledge by setting register 130 = 2
-            rc = modbus_write_register(ctx, 131, 0);
+            // Acknowledge by setting register 131 = 1
+            rc = modbus_write_register(ctx, 131, 1);
             if (rc == -1) {
-                std::cerr << "Failed to write 2 to register 130: " << modbus_strerror(errno) << "\n";
+                std::cerr << "Failed to write 1 to register 131: " << modbus_strerror(errno) << "\n";
             } else {
                 std::cout << "Successfully told Massa Yes\n";
             }
