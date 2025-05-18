@@ -16,55 +16,27 @@ int main() {
         std::cerr << "Unable to allocate libmodbus context\n";
         return -1;
     }
-
-//mb_mapping = modbus_mapping_new(0,0,0,0);
-//    if (modbus_connect(ctx) == -1) {
-//        std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
-//        modbus_free(ctx);
-//        return -1;
-//    }
-modbus_mapping_t* modbus_mapping_new_start_address(
-    0,0    //Coils
-    0,0    // Diskret input
-    130, 4,    //Holding register, som defineret på UR robotten
-    0,0    //Input register
-);
-    if (mb_mapping == nullptr) {
-        std::cerr << "Failed to allocate Modbus mapping: " << modbus_strerror(errno) << "\n";
-        modbus_close(ctx);
-        modbus_free(ctx);
-        return -1;
+    
+    modbus_set_debug(ctx, true);
+    
+    if (modbus_connect(ctx) == -1) {
+    std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
+    modbus_free(ctx);
+    return -1;
     }
     
-    for (int i = 0; i < 3; ++i) {
-        mb_mapping->tab_registers[130 + i] = i;    //Vi laver de tab_registers, som skal give os data frem og tilbage
-    }
-
+    uint16_t values[4];
     
-
+    int rc = modbus_read_registers(ctx, 130, 4, values);
     
-    while (true) {
-        uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
-        int rc = modbus_receive(ctx, query);
-        if (rc > 0) {
-            uint8_t function = query[7];
-            uint16_t addr = (query[8] << 8) | query[9];
-
-            if (addr == REG_ADDR) {
-                if (function == 0x03) {
-                    std::cout << "[READ] Register 130 requested\n";
-                } else if (function == 0x06 || function == 0x10) {
-                    std::cout << "[WRITE] Register 130 being written\n";
-                }
-            }
-
-            modbus_reply(ctx, query, rc, mb_mapping);
-        } else {
-            break;
+    if (rc == -1) {
+        std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
+    } else {
+        std::cout << "Read " << rc << " registers starting at 130:\n";
+        for (int i = 0; i < rc; ++i) {
+            std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
         }
-        sleep(1);  // Check hver 1 sekund
     }
-
 
     modbus_close(ctx);
     modbus_free(ctx);
