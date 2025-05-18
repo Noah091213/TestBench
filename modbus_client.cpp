@@ -59,11 +59,6 @@ int main() {
                 }
                 sleep(1);
             }
-                if (rc == -1) {
-                std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
-                } else {
-                    std::cout << "reset confirmation (set 131 = 0)";
-                }
         }
     }
 
