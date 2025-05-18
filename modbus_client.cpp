@@ -26,8 +26,9 @@ int main() {
     }
     
     uint16_t values[4];
-    
-    int rc = modbus_read_registers(ctx, 130, 4, values);
+
+    while(true){
+        int rc = modbus_read_registers(ctx, 130, 4, values);
     
     if (rc == -1) {
         std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
@@ -37,6 +38,22 @@ int main() {
             std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
         }
     }
+        
+    if (values[0] == 1) {
+            std::cout << "Massa tells us to open de grippar";
+            rc = modbus_write_register(ctx, 130, 0);
+        if (rc == -1) {
+            std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+        } else {
+            std::cout << "Successfully told Massa Yes \n";
+        }
+    }
+
+    
+        
+        
+    }
+
 
     modbus_close(ctx);
     modbus_free(ctx);
