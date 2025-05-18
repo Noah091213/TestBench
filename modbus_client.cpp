@@ -41,13 +41,14 @@ int main() {
         
     if (values[0] == 1) {
             std::cout << "Massa tells us to open de grippar";
-            rc = modbus_write_register(ctx, 130, 2);
+            rc = modbus_write_register(ctx, 131, 1);
         if (rc == -1) {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
-            std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";
+            std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";       
         }
     }
+
 
     sleep(1);
         
