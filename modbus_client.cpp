@@ -46,6 +46,9 @@ int main() {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
             std::cout << "Successfully told Massa Yes \n";
+                    for (int i = 0; i < rc; ++i) {
+            std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
+        }
         }
     }
 
