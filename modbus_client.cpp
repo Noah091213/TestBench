@@ -24,7 +24,8 @@ int main() {
     modbus_free(ctx);
     return -1;
     }
-    
+
+    int rc;
     uint16_t values[4];
 
     //Her laver vi lige en Reset på confirmation værdien
@@ -36,7 +37,7 @@ int main() {
     }
     
     while(true){
-        int rc = modbus_read_registers(ctx, 130, 4, values);
+    int rc = modbus_read_registers(ctx, 130, 4, values);
     
     if (rc == -1) {
         std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
@@ -54,11 +55,12 @@ int main() {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
             std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";       
+            sleep(1);
             rc = modbus_write_register(ctx, 131, 0);
                 if (rc == -1) {
                 std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
                 } else {
-                    sleep(2);
+                    std::cout << "reset confirmation (set 131 = 0)";
                 }
         }
     }
