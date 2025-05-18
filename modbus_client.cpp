@@ -34,7 +34,7 @@ int main() {
             std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
             break;
         }
-        std::cout << "-------------------------------------";
+        std::cout << "-------------------------------------"<< "\n";
         std::cout << "Register 130 = " << values[0] << "\n";
         std::cout << "Register 131 = " << values[1] << "\n";
         std::cout << "Register 132 = " << values[2] << "\n";
@@ -50,7 +50,7 @@ int main() {
         }
         //Close Gripper code:
         if (values[2] == 1) {
-            std::cout << "-------------------------------------";
+            std::cout << "-------------------------------------"<< "\n";
             std::cout << "Massa tells us to close da grippar\n";
             std::cout << "Register 130 = " << values[0] << "\n";
             std::cout << "Register 131 = " << values[1] << "\n";
@@ -65,7 +65,7 @@ int main() {
             if (rc == -1) {
                 std::cerr << "Failed to write 1 to register 133: " << modbus_strerror(errno) << "\n";
             } else {
-                std::cout << "-------------------------------------";
+                std::cout << "-------------------------------------"<< "\n";
                 std::cout << "Successfully Close for Massa and asks for more work\n";
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
@@ -80,7 +80,7 @@ int main() {
         
         //open gripper code
         if (values[0] == 1) {
-            std::cout << "-------------------------------------";
+            std::cout << "-------------------------------------"<< "\n";
             std::cout << "Massa tells us to open da grippar\n";
             std::cout << "Register 130 = " << values[0] << "\n";
             std::cout << "Register 131 = " << values[1] << "\n";
@@ -95,7 +95,7 @@ int main() {
             if (rc == -1) {
                 std::cerr << "Failed to write 1 to register 131: " << modbus_strerror(errno) << "\n";
             } else {
-                std::cout << "-------------------------------------";
+                std::cout << "-------------------------------------"<< "\n";
                 std::cout << "Successfully Open for Massa and asks for more work\n";
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
