@@ -10,7 +10,7 @@ modbus_mapping_t *mb_mapping;
 bool quit = false;
 
 int main() {
-    modbus_t *ctx = modbus_new_tcp("0.0.0.0", 502);  // IP of your UR robot
+    modbus_t *ctx = modbus_new_tcp("192.168.0.100", 502);  // IP of your UR robot
     modbus_set_debug(ctx,true);
     if (ctx == nullptr) {
         std::cerr << "Unable to allocate libmodbus context\n";
