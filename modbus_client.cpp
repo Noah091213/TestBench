@@ -40,7 +40,8 @@ int main() {
 
         if (values[0] == 1) {
             std::cout << "Massa tells us to open de grippar\n";
-
+            std::cout << "Register 130 = " << values[0] << "\n";
+            std::cout << "Register 131 = " << values[1] << "\n";
             // Simulate gripper operation
             sleep(10);  // Gripper action...
 
@@ -50,6 +51,8 @@ int main() {
                 std::cerr << "Failed to write 1 to register 131: " << modbus_strerror(errno) << "\n";
             } else {
                 std::cout << "Successfully told Massa Yes\n";
+                std::cout << "Register 130 = " << values[0] << "\n";
+                std::cout << "Register 131 = " << values[1] << "\n";
             }
         }
 
