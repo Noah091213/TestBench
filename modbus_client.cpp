@@ -45,7 +45,7 @@ int main() {
         if (rc == -1) {
             std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
         } else {
-            std::cout << "Successfully told Massa Yes \n";
+            std::cout << "Successfully told Massa Yes VALUE:" << values[0] << "\n";
         }
     }
 
