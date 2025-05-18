@@ -24,18 +24,26 @@ mb_mapping = modbus_mapping_new(1,0,0,0);
         return -1;
     }
 
-    while(quit == false){
-        time_sleep(1);
-        uint16_t tab_reg[32];
-        int rc1 = modbus_read_registers(ctx, 130, 1, tab_reg);  // Read Holding Register 128
-        int rc2 = modbus_read_registers(ctx, 131, 1, tab_reg);
-        int rc3 = modbus_read_registers(ctx, 132, 1, tab_reg);
-        int rc4 = modbus_read_registers(ctx, 133, 1, tab_reg);
+    bool quit = false;
+    const int start_address = 130;
+    const int num_registers = 4;
+    uint16_t tab_reg[num_registers];
+    uint16_t previous_values[num_registers] = {0};
 
-        if (rc1 == -1) {
+    while (!quit) {
+        sleep(1);
+        int rc = modbus_read_registers(ctx, start_address, num_registers, tab_reg);
+        if (rc == -1) {
             std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
-        } else {
-            std::cout << "Register[128] = " << tab_reg[0] << "\n";
+            continue;
+        }
+
+        for (int i = 0; i < num_registers; ++i) {
+            if (tab_reg[i] != previous_values[i]) {
+                std::cout << "Register[" << start_address + i << "] changed: " 
+                          << previous_values[i] << " -> " << tab_reg[i] << "\n";
+                previous_values[i] = tab_reg[i];
+            }
         }
     }
 
