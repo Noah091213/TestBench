@@ -16,8 +16,8 @@ int main() {
         return -1;
     }
 
-    //Fjerner Terminal text, som giver os rå Modbus Data
-    modbus_set_debug(ctx, false);
+    // Terminal text, som giver os rå Modbus Data
+    modbus_set_debug(ctx, true);
     
     if (modbus_connect(ctx) == -1) {
     std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
@@ -35,8 +35,8 @@ int main() {
             break;
         }
 
-//        std::cout << "Register 130 = " << values[0] << "\n";
-//        std::cout << "Register 131 = " << values[1] << "\n";
+        std::cout << "Register 130 = " << values[0] << "\n";
+        std::cout << "Register 131 = " << values[1] << "\n";
 
         if (values[0] == 1) {
             std::cout << "Massa tells us to open de grippar\n";
