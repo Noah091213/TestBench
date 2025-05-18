@@ -27,7 +27,9 @@ int main() {
 
     int rc;
     uint16_t values[4];
-
+    while(Values[1] == 1){
+        modbus_write_register(ctx, 131, 1);
+    }
     
     while(true){
     int rc = modbus_read_registers(ctx, 130, 4, values);
@@ -40,7 +42,7 @@ int main() {
             std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
         }
     }
-        
+
     if (values[0] == 1) {
         std::cout << "Massa tells us to open de grippar";
             rc = modbus_write_register(ctx, 131, 1);
