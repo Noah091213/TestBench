@@ -18,6 +18,7 @@ int main() {
 
     // Terminal text, som giver os rå Modbus Data
     modbus_set_debug(ctx, false);
+    Bool addDebugging = false;
     
     if (modbus_connect(ctx) == -1) {
     std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
@@ -34,12 +35,15 @@ int main() {
             std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
             break;
         }
-        std::cout << "-------------------------------------"<< "\n";
-        std::cout << "Register 130 = " << values[0] << "\n";
-        std::cout << "Register 131 = " << values[1] << "\n";
-        std::cout << "Register 132 = " << values[2] << "\n";
-        std::cout << "Register 133 = " << values[3] << "\n";
-        std::cout << "Register 134 = " << values[4] << "\n";
+        if(addDebugging){
+            std::cout << "-------------------------------------"<< "\n";
+            std::cout << "Register 130 = " << values[0] << "\n";
+            std::cout << "Register 131 = " << values[1] << "\n";
+            std::cout << "Register 132 = " << values[2] << "\n";
+            std::cout << "Register 133 = " << values[3] << "\n";
+            std::cout << "Register 134 = " << values[4] << "\n";
+        }
+        
         
         
         if ((values[1] == 1 && values[4] == 1) || (values[3] == 1 && values[4] == 1)) {
@@ -52,11 +56,13 @@ int main() {
         if (values[2] == 1) {
             std::cout << "-------------------------------------"<< "\n";
             std::cout << "Massa tells us to close da grippar\n";
+            if(addDebugging){
             std::cout << "Register 130 = " << values[0] << "\n";
             std::cout << "Register 131 = " << values[1] << "\n";
             std::cout << "Register 132 = " << values[2] << "\n";
             std::cout << "Register 133 = " << values[3] << "\n";
             std::cout << "Register 134 = " << values[4] << "\n";
+            }
             // Simulate gripper operation
             sleep(2);  // Gripper action...
 
@@ -67,11 +73,13 @@ int main() {
             } else {
                 std::cout << "-------------------------------------"<< "\n";
                 std::cout << "Successfully Close for Massa and asks for more work\n";
+            if(addDebugging){
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
                 std::cout << "Register 132 = " << values[2] << "\n";
                 std::cout << "Register 133 = " << values[3] << "\n";
                 std::cout << "Register 134 = " << values[4] << "\n";
+            }
             }
         }
 
@@ -82,11 +90,13 @@ int main() {
         if (values[0] == 1) {
             std::cout << "-------------------------------------"<< "\n";
             std::cout << "Massa tells us to open da grippar\n";
+        if(addDebugging){
             std::cout << "Register 130 = " << values[0] << "\n";
             std::cout << "Register 131 = " << values[1] << "\n";
             std::cout << "Register 132 = " << values[2] << "\n";
             std::cout << "Register 133 = " << values[3] << "\n";
             std::cout << "Register 134 = " << values[4] << "\n";
+        }
             // Simulate gripper operation
             sleep(2);  // Gripper action...
 
@@ -97,11 +107,13 @@ int main() {
             } else {
                 std::cout << "-------------------------------------"<< "\n";
                 std::cout << "Successfully Open for Massa and asks for more work\n";
+            if(addDebugging){
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
                 std::cout << "Register 132 = " << values[2] << "\n";
                 std::cout << "Register 133 = " << values[3] << "\n";
                 std::cout << "Register 134 = " << values[4] << "\n";
+            }
             }
         }
 
