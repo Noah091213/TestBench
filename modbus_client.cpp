@@ -56,7 +56,7 @@ int main() {
             if (rc == -1) {
                 std::cerr << "Failed to write 1 to register 131: " << modbus_strerror(errno) << "\n";
             } else {
-                std::cout << "Successfully told Massa Yes\n";
+                std::cout << "Successfully Opened for Massa and asks for more work\n";
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
                 std::cout << "Register 134 = " << values[4] << "\n";
