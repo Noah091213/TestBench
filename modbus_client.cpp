@@ -46,7 +46,22 @@ modbus_mapping_t* modbus_mapping_new_start_address(
     while (true) {
         uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
         int rc = modbus_receive(ctx, query);
-        std::cout << query[MODBUS_TCP_MAX_ADU_LENGTH]<<;
+        if (rc > 0) {
+            uint8_t function = query[7];
+            uint16_t addr = (query[8] << 8) | query[9];
+
+            if (addr == REG_ADDR) {
+                if (function == 0x03) {
+                    std::cout << "[READ] Register 130 requested\n";
+                } else if (function == 0x06 || function == 0x10) {
+                    std::cout << "[WRITE] Register 130 being written\n";
+                }
+            }
+
+            modbus_reply(ctx, query, rc, mb_mapping);
+        } else {
+            break;
+        }
         sleep(1);  // Check hver 1 sekund
     }
 
