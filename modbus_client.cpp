@@ -45,7 +45,7 @@ int main() {
             sleep(10);  // Gripper action...
 
             // Acknowledge by setting register 130 = 2
-            rc = modbus_write_register(ctx, 130, 2);
+            rc = modbus_write_register(ctx, 131, 0);
             if (rc == -1) {
                 std::cerr << "Failed to write 2 to register 130: " << modbus_strerror(errno) << "\n";
             } else {
