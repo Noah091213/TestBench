@@ -41,25 +41,15 @@ int main() {
 
         // If the robot set register 130 to 1...
         if (values[0] == 1) {
-            std::cout << "[!] Massa tells us to open de grippar\n";
-
+            std::cout << "Massa tells us to open de grippar\n";
             // Acknowledge it by writing 1 to 131
-            rc = modbus_write_register(ctx, 131, 1);
+            rc = modbus_write_register(ctx, 130, 2);
             if (rc == -1) {
                 std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
             } else {
-                std::cout << "Sent confirmation: 131 = 1\n";
+                std::cout << "Sent confirmation: 130 = 1\n";
             }
-
-            sleep(2);  // Wait for robot to process
-
-            // Reset 131 back to 0
-            rc = modbus_write_register(ctx, 131, 0);
-            if (rc == -1) {
-                std::cerr << "Reset failed: " << modbus_strerror(errno) << "\n";
-            } else {
-                std::cout << "Reset confirmation: 131 = 0\n";
-            }
+            sleep(2);
         }
 
         sleep(1);  // Poll once per second
