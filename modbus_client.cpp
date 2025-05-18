@@ -25,34 +25,35 @@ int main() {
     return -1;
     }
 
-    int rc;
+int rc;
     uint16_t values[4];
+
     while (true) {
-        rc = modbus_read_registers(ctx, 130, 4, values);
+        rc = modbus_read_registers(ctx, 130, 1, values); // only need register 130
         if (rc == -1) {
             std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
             break;
         }
 
-        std::cout << "Read " << rc << " registers starting at 130:\n";
-        for (int i = 0; i < rc; ++i) {
-            std::cout << "Register " << (130 + i) << " = " << values[i] << "\n";
-        }
+        uint16_t request = values[0];
+        std::cout << "Register 130 = " << request << "\n";
 
-        // If the robot set register 130 to 1...
-        if (values[0] == 1) {
-            std::cout << "Massa tells us to open de grippar\n";
-            // Acknowledge it by writing 1 to 131
+        if (request == 1) {
+            std::cout << "UR robot requested gripper action\n";
+
+            // Simulate gripper operation
+            sleep(1);  // Gripper action...
+
+            // Acknowledge by setting register 130 = 2
             rc = modbus_write_register(ctx, 130, 2);
             if (rc == -1) {
-                std::cerr << "Write failed: " << modbus_strerror(errno) << "\n";
+                std::cerr << "Failed to write 2 to register 130: " << modbus_strerror(errno) << "\n";
             } else {
-                std::cout << "Sent confirmation: 130 = 1\n";
+                std::cout << "Acknowledged gripper use with 130 = 2\n";
             }
-            sleep(2);
         }
 
-        sleep(1);  // Poll once per second
+        sleep(1); // polling delay
     }
 
     modbus_close(ctx);
