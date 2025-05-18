@@ -24,27 +24,35 @@ mb_mapping = modbus_mapping_new(1,0,0,0);
         return -1;
     }
 
-    bool quit = false;
-    const int start_address = 130;
-    const int num_registers = 4;
-    uint16_t tab_reg[num_registers];
-    uint16_t previous_values[num_registers] = {0};
+    uint16_t value130 = 0;
 
-    while (!quit) {
-        sleep(1);
-        int rc = modbus_read_registers(ctx, start_address, num_registers, tab_reg);
+    while (true) {
+        int rc = modbus_read_registers(ctx, 130, 1, &value130);
         if (rc == -1) {
-            std::cerr << "Read failed: " << modbus_strerror(errno) << "\n";
+            std::cerr << "Failed to read register 130: " << modbus_strerror(errno) << "\n";
+            sleep(1);
             continue;
         }
 
-        for (int i = 0; i < num_registers; ++i) {
-            if (tab_reg[i] != previous_values[i]) {
-                std::cout << "Register[" << start_address + i << "] changed: " 
-                          << previous_values[i] << " -> " << tab_reg[i] << "\n";
-                previous_values[i] = tab_reg[i];
+        if (value130 == 1) {
+            std::cout << "Register 130 is 1 — triggering action...\n";
+
+            // Set register 130 back to 0
+            if (modbus_write_register(ctx, 130, 0) == -1) {
+                std::cerr << "Failed to write 0 to register 130: " << modbus_strerror(errno) << "\n";
+            } else {
+                std::cout << "Register 130 set to 0\n";
+            }
+
+            // Set register 131 to 1
+            if (modbus_write_register(ctx, 131, 1) == -1) {
+                std::cerr << "Failed to write 1 to register 131: " << modbus_strerror(errno) << "\n";
+            } else {
+                std::cout << "Register 131 set to 1\n";
             }
         }
+
+        sleep(1);  // Check every 1 second
     }
 
 
