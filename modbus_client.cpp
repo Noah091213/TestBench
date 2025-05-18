@@ -49,7 +49,7 @@ int main() {
         }
     }
 
-    
+    sleep(5);
         
         
     }
