@@ -17,21 +17,37 @@ int main() {
         return -1;
     }
 
-mb_mapping = modbus_mapping_new(1,0,0,0);
-    if (modbus_connect(ctx) == -1) {
-        std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
+//mb_mapping = modbus_mapping_new(0,0,0,0);
+//    if (modbus_connect(ctx) == -1) {
+//        std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
+//        modbus_free(ctx);
+//        return -1;
+//    }
+modbus_mapping_t* modbus_mapping_new_start_address(
+    0,0    //Coils
+    0,0    // Diskret input
+    130, 4,    //Holding register, som defineret på UR robotten
+    0,0    //Input register
+);
+    if (mb_mapping == nullptr) {
+        std::cerr << "Failed to allocate Modbus mapping: " << modbus_strerror(errno) << "\n";
+        modbus_close(ctx);
         modbus_free(ctx);
         return -1;
     }
+    
+    for (int i = 0; i < 3; ++i) {
+        mb_mapping->tab_registers[130 + i] = i;    //Vi laver de tab_registers, som skal give os data frem og tilbage
+    }
 
-    uint16_t value130 = 0;
+    
 
-    modbus_add_signal("192.168.0.100", 255, 130, 1, "openGripper");
     
     while (true) {
-        modbus_get_signal_status("openGripper", False);
-
-        sleep(1);  // Check every 1 second
+        uint8_t query[MODBUS_TCP_MAX_ADU_LENGTH];
+        int rc = modbus_receive(ctx, query);
+        std::cout << query[MODBUS_TCP_MAX_ADU_LENGTH]<<;
+        sleep(1);  // Check hver 1 sekund
     }
 
 
