@@ -27,7 +27,8 @@ int main() {
 
     int rc;
     uint16_t values[4];
-    while(Values[1] == 1){
+    
+    while(values[1] == 1){
         modbus_write_register(ctx, 131, 1);
     }
     
