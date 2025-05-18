@@ -37,13 +37,19 @@ int main() {
 
         std::cout << "Register 130 = " << values[0] << "\n";
         std::cout << "Register 131 = " << values[1] << "\n";
-
+        std::cout << "Register 134 = " << values[4] << "\n";
+        
+        if (values[1] == 1 || values[4] == 1) {
+            rc = modbus_write_register(ctx, 131, 0);
+            rc = modbus_write_register(ctx, 134, 0);
+        }
         if (values[0] == 1) {
             std::cout << "Massa tells us to open de grippar\n";
             std::cout << "Register 130 = " << values[0] << "\n";
             std::cout << "Register 131 = " << values[1] << "\n";
+            std::cout << "Register 134 = " << values[4] << "\n";
             // Simulate gripper operation
-            sleep(10);  // Gripper action...
+            sleep(5);  // Gripper action...
 
             // Acknowledge by setting register 131 = 1
             rc = modbus_write_register(ctx, 131, 1);
@@ -53,10 +59,11 @@ int main() {
                 std::cout << "Successfully told Massa Yes\n";
                 std::cout << "Register 130 = " << values[0] << "\n";
                 std::cout << "Register 131 = " << values[1] << "\n";
+                std::cout << "Register 134 = " << values[4] << "\n";
             }
         }
 
-        sleep(5); // polling delay
+        sleep(3); // polling delay
     }
 
     modbus_close(ctx);
