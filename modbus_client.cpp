@@ -18,7 +18,7 @@ int main() {
 
     // Terminal text, som giver os rå Modbus Data
     modbus_set_debug(ctx, false);
-    Bool addDebugging = false;
+    bool addDebugging = false;
     
     if (modbus_connect(ctx) == -1) {
     std::cerr << "Connection failed: " << modbus_strerror(errno) << "\n";
